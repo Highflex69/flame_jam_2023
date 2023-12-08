@@ -4,6 +4,6 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(
-    GameWidget(game: ColdAndHotGame(tileSize: 16)),
+    GameWidget(game: ColdAndHotGame(tileSize: 16/*32*/)),
   );
 }

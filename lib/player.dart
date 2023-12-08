@@ -2,13 +2,16 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
+import 'package:flame_jam_2023/door.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_jam_2023/cold_and_hot_game.dart';
 import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
 
-enum _AnimationState { idle }
+enum _AnimationState {
+  idle,
+}
 
 class Player extends JumperCharacter<ColdAndHotGame> {
   Player({super.health = initialHealth}) : super(removeOnDeath: false) {
@@ -53,7 +56,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
     updateHandleInput(dt);
 
-    //updateCollisionInteractions(dt);
+    updateCollisionInteractions(dt);
 
     if (isDead) {
       deadTime += dt;
@@ -71,6 +74,22 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
     if (!wasJumping && jumping) {
       //FlameAudio.play('jump.wav');
+    }
+  }
+
+  void updateCollisionInteractions(double dt) {
+    if (isDead) {
+      return;
+    }
+
+    if (collisionInfo.downCollision?.tags.contains('Hazard') ?? false) {
+      health -= collisionInfo.downCollision!.hazardDamage;
+    }
+
+    for (final other in collisionInfo.allCollisions) {
+      if (other is Door && _input.justPressed && _input.isPressedCenter) {
+        other.enter(this);
+      }
     }
   }
 
@@ -96,71 +115,25 @@ class Player extends JumperCharacter<ColdAndHotGame> {
           // as letting go of the jump button
           !collisionInfo.up) {
         jumping = true;
-        timeHoldingJump += dt;
-      } else {
-        jumping = false;
-        timeHoldingJump = 0;
-      }
-    }
-
-    if (isAlive) {
-      // Keep jumping if started.
-      if (jumping &&
-          _input.isPressed &&
-          timeHoldingJump < maxJumpHoldTime &&
-          // hitting a ceiling should behave the same
-          // as letting go of the jump button
-          !collisionInfo.up) {
-        jumping = true;
-        timeHoldingJump += dt;
-      } else {
-        jumping = false;
-        timeHoldingJump = 0;
-      }
-    }
-
-    final ladderCollision =
-        collisionInfo.allCollisions.whereType<Ladder>().firstOrNull;
-    final onLadderStatus = getStatus<OnLadderStatus>();
-    if (_input.justPressed &&
-        _input.isPressedCenter &&
-        ladderCollision != null &&
-        onLadderStatus == null) {
-      final status = OnLadderStatus(ladderCollision);
-      add(status);
-      walking = false;
-      airXVelocity = 0;
-      if (isOnGround) {
-        status.movement = LadderMovement.down;
-      } else {
-        status.movement = LadderMovement.up;
-      }
-    } else if (_input.justPressed && onLadderStatus != null) {
-      if (_input.isPressedCenter) {
-        if (onLadderStatus.movement != LadderMovement.stopped) {
-          onLadderStatus.movement = LadderMovement.stopped;
-        } else if (onLadderStatus.prevDirection == LadderMovement.up) {
-          onLadderStatus.movement = LadderMovement.down;
-        } else {
-          onLadderStatus.movement = LadderMovement.up;
-        }
-      } else {
-        // JumperBehavior will handle applying the jump and exiting the ladder
-        jumping = true;
         airXVelocity = walkSpeed;
-        walking = true;
-        // Make sure the player exits the ladder facing the direction jumped
-        faceLeft = _input.isPressedLeft;
+        timeHoldingJump += dt;
+        //airXVelocity = walkSpeed;
+      } else {
+        jumping = false;
+        timeHoldingJump = 0;
       }
-    } else if (_input.justPressed && _input.isPressedLeft) {
+    }
+    if (_input.justPressed && _input.isPressedCenter && !jumping) {
+      jumping = true;
+      //airXVelocity = walkSpeed;
+      walking = true;
+      faceLeft = _input.isPressedLeft;
+      //faceRight = _input.isPressedRight;
+    }
+    if (_input.justPressed && _input.isPressedLeft) {
       // Tapped left.
       if (walking) {
-        if (faceLeft) {
-          // Already moving left.
-          if (isOnGround) {
-            jumping = true;
-          }
-        } else {
+        if (!faceLeft) {
           // Moving right, stop.
           if (isOnGround) {
             walking = false;
@@ -178,12 +151,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     } else if (_input.justPressed && _input.isPressedRight) {
       // Tapped right.
       if (walking) {
-        if (!faceLeft) {
-          // Already moving right.
-          if (isOnGround) {
-            jumping = true;
-          }
-        } else {
+        if (faceLeft) {
           // Moving left, stop.
           if (isOnGround) {
             walking = false;

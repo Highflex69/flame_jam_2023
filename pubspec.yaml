@@ -16,6 +16,7 @@ dependencies:
   flame_svg: ^1.8.6
   flame_riverpod: ^5.0.0
   leap: ^0.5.2
+  tiled: ^0.10.1
 
 dev_dependencies:
   flutter_test:

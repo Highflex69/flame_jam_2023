@@ -1,6 +1,7 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
+import 'package:flame_jam_2023/door.dart';
 import 'package:flame_jam_2023/player.dart';
 import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
@@ -23,7 +24,7 @@ class ColdAndHotGame extends LeapGame
   Future<void> _loadLevel() {
     return loadWorldAndMap(
       tiledMapPath: _currentLevel,
-      //tiledObjectHandlers: tiledObjectHandlers,
+      tiledObjectHandlers: tiledObjectHandlers,
       groundTileHandlers: groundTileHandlers,
     );
   }
@@ -39,6 +40,10 @@ class ColdAndHotGame extends LeapGame
       width: tileSize * 32,
       height: tileSize * 16,
     );
+
+    tiledObjectHandlers = {
+      'Door': DoorFactory(),
+    };
 
     input = ThreeButtonInput(
       keyboardInput: ThreeButtonKeyboardInput(
@@ -76,8 +81,8 @@ class ColdAndHotGame extends LeapGame
   }
 
   Future<void> levelCleared() async {
-    final i = _levels.indexOf(_currentLevel);
-    _currentLevel = _levels[(i + 1) % _levels.length];
+    //final i = _levels.indexOf(_currentLevel);
+    //_currentLevel = _levels[(i + 1) % _levels.length];
 
     await _loadLevel();
   }
