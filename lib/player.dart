@@ -13,16 +13,24 @@ enum _AnimationState {
   idle,
 }
 
+enum _Status {
+  melting,
+  idle,
+  freezing,
+}
+
+const double defaultCharacterSize = 16;
+
 class Player extends JumperCharacter<ColdAndHotGame> {
   Player({super.health = initialHealth}) : super(removeOnDeath: false) {
     solidTags.add(CommonTags.ground);
   }
 
-  static const initialHealth = 1;
-
+  static const initialHealth = 100;
   late final Vector2 _spawn;
   late final ThreeButtonInput _input;
   double timeHoldingJump = 0;
+  var status = _Status.idle;
 
   double deadTime = 0;
 
@@ -61,6 +69,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     if (isDead) {
       deadTime += dt;
       walking = false;
+      jumping = false;
     }
 
     if (world.isOutside(this) || (isDead && deadTime > 3)) {
@@ -81,9 +90,12 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     if (isDead) {
       return;
     }
-
-    if (collisionInfo.downCollision?.tags.contains('Hazard') ?? false) {
-      health -= collisionInfo.downCollision!.hazardDamage;
+    final collidingWithHazard =
+        (collisionInfo.downCollision?.tags.contains('Hazard') ?? false);
+    if (status != _Status.melting && collidingWithHazard) {
+      melt();
+    } else if (status != _Status.idle && !collidingWithHazard) {
+      status = _Status.idle;
     }
 
     for (final other in collisionInfo.allCollisions) {
@@ -101,7 +113,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     airXVelocity = 0;
     faceLeft = false;
     jumping = false;
-
+    characterAnimation!.size = Vector2.all(defaultCharacterSize);
     //FlameAudio.play('spawn.wav');
   }
 
@@ -168,6 +180,18 @@ class Player extends JumperCharacter<ColdAndHotGame> {
       }
     }
   }
+
+  void melt() {
+    // dmg = 10hp
+    health -= collisionInfo.downCollision!.hazardDamage;
+    status = _Status.melting;
+    const reduction = defaultCharacterSize * 0.1;
+    if (characterAnimation != null &&
+        characterAnimation!.size.y - reduction > 0) {
+      characterAnimation!.size -= Vector2.all(reduction);
+      maxJumpHoldTime -= maxJumpHoldTime * 0.2;
+    }
+  }
 }
 
 class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
@@ -184,7 +208,7 @@ class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
           SpriteAnimationData.sequenced(
             amount: 2,
             stepTime: 0.4,
-            textureSize: Vector2.all(16),
+            textureSize: Vector2.all(defaultCharacterSize),
             amountPerRow: 2,
           ))
     };
