@@ -39,11 +39,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5803,
+            "scale": 1.225,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 211.98506612668479,
-                "y": 176.54875656520915
+                "x": 256.3265306122448,
+                "y": 183.67346938775506
             }
         }
     },
@@ -58,6 +58,7 @@
     "project": "flame_jam_assets.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "tiles/map1.tmx",
         "tiles/map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
