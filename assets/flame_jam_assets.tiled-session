@@ -43,11 +43,11 @@
                 3,
                 2
             ],
-            "scale": 1.1012,
+            "scale": 1.7273,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 198.41990555757357,
-                "y": 159.82564475118056
+                "x": 415.9671163086898,
+                "y": 120.99808950384993
             }
         },
         "tiles/map2.tmx": {
@@ -87,8 +87,9 @@
     "project": "flame_jam_assets.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "tiles/map2.tmx",
         "tiles/map1.tmx",
+        "tiles/map3.tmx",
+        "tiles/map2.tmx",
         "tiles/map.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
