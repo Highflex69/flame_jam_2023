@@ -1,4 +1,4 @@
-import 'package:flame/camera.dart';
+import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame_audio/flame_audio.dart';
@@ -13,6 +13,7 @@ class ColdAndHotGame extends LeapGame
   late final ThreeButtonInput input;
   late final Map<String, TiledObjectHandler> tiledObjectHandlers;
   late final Map<String, GroundTileHandler> groundTileHandlers;
+  final List<VoidCallback> _inputListener = [];
 
   ColdAndHotGame({required super.tileSize});
 
@@ -41,7 +42,7 @@ class ColdAndHotGame extends LeapGame
   @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
-    FlameAudio.loop('background.mp3');
+    //FlameAudio.loop('background.mp3');
     debugMode = true;
     tiledObjectHandlers = {
       'Door': DoorFactory(),
@@ -57,6 +58,7 @@ class ColdAndHotGame extends LeapGame
       height: tileSize * 16,
     );
 
+    /*
     input = ThreeButtonInput(
       keyboardInput: ThreeButtonKeyboardInput(
         leftKeys: {PhysicalKeyboardKey.keyA},
@@ -64,7 +66,22 @@ class ColdAndHotGame extends LeapGame
         rightKeys: {PhysicalKeyboardKey.keyD},
       ),
     );
-    add(input);
+    add(input);*/
+    add(
+      KeyboardListenerComponent(
+        keyDown: {
+          LogicalKeyboardKey.space: (_) {
+            _triggerInputListeners();
+            return false;
+          },
+        },
+        keyUp: {
+          LogicalKeyboardKey.space: (_) {
+            return false;
+          },
+        },
+      ),
+    );
 
     await _loadLevel();
     // Don't let the camera move outside the bounds of the map, inset
@@ -110,5 +127,16 @@ class ColdAndHotGame extends LeapGame
   Future<void> goToLevel(String mapName) async {
     _currentLevel = mapName;
     await _loadLevel();
+  }
+
+  void addInputListener(VoidCallback listener) => _inputListener.add(listener);
+
+  void removeInputListener(VoidCallback listener) =>
+      _inputListener.remove(listener);
+
+  void _triggerInputListeners() {
+    for (final listener in _inputListener) {
+      listener();
+    }
   }
 }

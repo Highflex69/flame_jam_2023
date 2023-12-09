@@ -17,6 +17,7 @@ dependencies:
   flame_riverpod: ^5.1.0
   leap: ^0.5.2
   tiled: ^0.10.1
+  flame_behaviors: ^1.0.0
 
 dev_dependencies:
   flutter_test:
