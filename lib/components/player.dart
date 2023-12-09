@@ -1,13 +1,6 @@
-import 'dart:ui';
-import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_jam_2023/components/door.dart';
-import 'package:flame_jam_2023/components/info_text.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flame/flame.dart';
 import 'package:flame_jam_2023/cold_and_hot_game.dart';
-import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
 
 enum _AnimationState {
