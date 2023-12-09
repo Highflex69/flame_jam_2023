@@ -14,8 +14,8 @@
             "scale": 0.4959,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 594.8779995966928,
-                "y": 181.48820326678765
+                "x": 383.1417624521073,
+                "y": 166.36418632788866
             }
         },
         "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx#level_ice_tileset": {
@@ -39,19 +39,27 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.6512,
+            "scale": 1.3818,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 209.24176356589146,
-                "y": 165.03149224806202
+                "x": 249.67433782023448,
+                "y": 153.7849182226082
             }
         },
         "tiles/map2.tmx": {
             "scale": 1.0271,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 253.62671599649508,
+                "x": 159.67286534904105,
                 "y": 102.71638594099895
+            }
+        },
+        "tiles/map3.tmx": {
+            "scale": 1.6813,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 159.40046392672338,
+                "y": 91.2984000475822
             }
         }
     },
@@ -66,6 +74,7 @@
     "project": "flame_jam_assets.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "tiles/map2.tmx",
         "tiles/map1.tmx",
         "tiles/map.tmx"
     ],
