@@ -43,33 +43,33 @@
                 3,
                 2
             ],
-            "scale": 1.7273,
-            "selectedLayer": 1,
+            "scale": 2.8,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 415.9671163086898,
-                "y": 120.99808950384993
+                "x": 195.89285714285717,
+                "y": 153.92857142857144
             }
         },
         "tiles/map2.tmx": {
             "expandedObjectLayers": [
                 3
             ],
-            "scale": 1.4607,
+            "scale": 1.0894,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 339.90552474840825,
-                "y": 256.0416238789621
+                "x": 325.4084817330641,
+                "y": 223.97650082614282
             }
         },
         "tiles/map3.tmx": {
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 2.1389,
+            "scale": 1.6246,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 116.64874468184581,
-                "y": 126.70064051615316
+                "x": 230.51828142311953,
+                "y": 70.78665517665885
             }
         },
         "tiles/spritemap.tsx": {
