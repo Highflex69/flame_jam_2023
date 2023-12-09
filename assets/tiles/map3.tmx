@@ -1,6 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="8">
- <tileset firstgid="1" source="spritemap.tsx"/>
+ <tileset firstgid="1" name="spritemap" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="../images/spritemap.png" width="256" height="256"/>
+  <tile id="8" type="OneWayTopPlatform"/>
+  <tile id="19" type="OneWayTopPlatform"/>
+  <tile id="20" type="OneWayTopPlatform"/>
+  <tile id="21" type="OneWayTopPlatform"/>
+  <tile id="35" type="Hazard">
+   <properties>
+    <property name="Damage" type="int" value="10"/>
+   </properties>
+   <animation>
+    <frame tileid="35" duration="100"/>
+    <frame tileid="36" duration="100"/>
+    <frame tileid="37" duration="100"/>
+    <frame tileid="38" duration="100"/>
+    <frame tileid="39" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="36" type="Hazard"/>
+  <tile id="37" type="Hazard"/>
+  <tile id="38" type="Hazard"/>
+  <tile id="39" type="Hazard"/>
+  <tile id="54" type="Hazard"/>
+  <tile id="55" type="Hazard"/>
+  <tile id="57" type="Door"/>
+  <tile id="58" type="Door"/>
+  <tile id="70" type="Hazard"/>
+  <tile id="71" type="Hazard"/>
+  <tile id="73" type="Door"/>
+  <tile id="74" type="Door"/>
+  <tile id="80" type="Hazard">
+   <properties>
+    <property name="Damage" type="int" value="50"/>
+   </properties>
+   <animation>
+    <frame tileid="80" duration="100"/>
+    <frame tileid="82" duration="100"/>
+    <frame tileid="84" duration="100"/>
+    <frame tileid="86" duration="100"/>
+    <frame tileid="54" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="81" type="Hazard">
+   <properties>
+    <property name="Damage" type="int" value="50"/>
+   </properties>
+   <animation>
+    <frame tileid="81" duration="100"/>
+    <frame tileid="83" duration="100"/>
+    <frame tileid="85" duration="100"/>
+    <frame tileid="87" duration="100"/>
+    <frame tileid="55" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="82" type="Hazard"/>
+  <tile id="83" type="Hazard"/>
+  <tile id="84" type="Hazard"/>
+  <tile id="85" type="Hazard"/>
+  <tile id="86" type="Hazard"/>
+  <tile id="87" type="Hazard"/>
+  <tile id="89" type="Door"/>
+  <tile id="90" type="Door"/>
+  <tile id="96" type="Hazard">
+   <properties>
+    <property name="Damage" type="int" value="50"/>
+   </properties>
+   <animation>
+    <frame tileid="96" duration="100"/>
+    <frame tileid="98" duration="100"/>
+    <frame tileid="100" duration="100"/>
+    <frame tileid="102" duration="100"/>
+    <frame tileid="70" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="97" type="Hazard">
+   <properties>
+    <property name="Damage" type="int" value="50"/>
+   </properties>
+   <animation>
+    <frame tileid="97" duration="100"/>
+    <frame tileid="99" duration="100"/>
+    <frame tileid="101" duration="100"/>
+    <frame tileid="103" duration="100"/>
+    <frame tileid="71" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="98" type="Hazard"/>
+  <tile id="99" type="Hazard"/>
+  <tile id="100" type="Hazard"/>
+  <tile id="101" type="Hazard"/>
+  <tile id="102" type="Hazard"/>
+  <tile id="103" type="Hazard"/>
+  <tile id="105" type="Door"/>
+  <tile id="106" type="Door"/>
+  <tile id="114">
+   <animation>
+    <frame tileid="114" duration="100"/>
+    <frame tileid="116" duration="100"/>
+    <frame tileid="118" duration="100"/>
+    <frame tileid="120" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="115">
+   <animation>
+    <frame tileid="115" duration="100"/>
+    <frame tileid="117" duration="100"/>
+    <frame tileid="119" duration="100"/>
+    <frame tileid="121" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="130">
+   <animation>
+    <frame tileid="130" duration="100"/>
+    <frame tileid="132" duration="100"/>
+    <frame tileid="134" duration="100"/>
+    <frame tileid="136" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="131">
+   <animation>
+    <frame tileid="131" duration="100"/>
+    <frame tileid="133" duration="100"/>
+    <frame tileid="135" duration="100"/>
+    <frame tileid="137" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
  <tileset firstgid="257" source="images.tsx"/>
  <imagelayer id="6" name="Background" offsetx="0" offsety="-59.8276">
   <image source="../images/kitchen new.jpg" width="512" height="320"/>
@@ -14,7 +140,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,20,21,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,20,23,24,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,20,21,21,21,21,21,24,0,0,0,0,0,0,0,0,0,0,20,21,24,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

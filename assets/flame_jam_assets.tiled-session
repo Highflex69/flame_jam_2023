@@ -43,11 +43,11 @@
                 3,
                 2
             ],
-            "scale": 2.3402,
+            "scale": 2.3172,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 349.75643107426714,
-                "y": 113.6654986753269
+                "x": 262.6014155014673,
+                "y": 100.55239081650267
             }
         },
         "tiles/map2.tmx": {
@@ -65,12 +65,15 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 1.6246,
+            "scale": 1.4801,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 230.51828142311953,
-                "y": 70.78665517665885
+                "x": 178.70414161205326,
+                "y": 145.93608539963515
             }
+        },
+        "tiles/map3.tmx#spritemap": {
+            "scaleInDock": 1
         },
         "tiles/spritemap.tsx": {
             "dynamicWrapping": false
