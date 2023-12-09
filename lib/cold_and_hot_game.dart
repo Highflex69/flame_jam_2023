@@ -1,6 +1,7 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_jam_2023/components/door.dart';
 import 'package:flame_jam_2023/components/player.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +33,15 @@ class ColdAndHotGame extends LeapGame
   }
 
   @override
+  void onDispose() {
+    FlameAudio.bgm.dispose();
+    super.onDispose();
+  }
+
+  @override
   Future<void> onLoad() async {
+    FlameAudio.bgm.initialize();
+    FlameAudio.loop('background.mp3');
     debugMode = true;
     tiledObjectHandlers = {
       'Door': DoorFactory(),
