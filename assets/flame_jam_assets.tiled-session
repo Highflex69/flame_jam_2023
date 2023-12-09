@@ -14,8 +14,8 @@
             "scale": 0.4959,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1772.534785238959,
-                "y": 355.91853196208916
+                "x": 1733.2123411978218,
+                "y": 369.02601330913495
             }
         },
         "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx#level_ice_tileset": {
@@ -43,11 +43,11 @@
                 3,
                 2
             ],
-            "scale": 2.3402,
-            "selectedLayer": 1,
+            "scale": 1.4618,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 349.75643107426714,
-                "y": 113.6654986753269
+                "x": 164.5231905869476,
+                "y": 139.5539745519223
             }
         },
         "tiles/map2.tmx": {
@@ -55,22 +55,25 @@
                 3
             ],
             "scale": 1.0894,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 325.4084817330641,
-                "y": 223.97650082614282
+                "x": 206.07673948962733,
+                "y": 224.89443730493855
             }
         },
         "tiles/map3.tmx": {
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 1.6246,
+            "scale": 1.4801,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 230.51828142311953,
-                "y": 70.78665517665885
+                "x": 178.70414161205326,
+                "y": 145.93608539963515
             }
+        },
+        "tiles/map3.tmx#spritemap": {
+            "scaleInDock": 1
         },
         "tiles/spritemap.tsx": {
             "dynamicWrapping": false
