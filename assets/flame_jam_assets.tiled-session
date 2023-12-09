@@ -14,8 +14,8 @@
             "scale": 0.4959,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1772.534785238959,
-                "y": 355.91853196208916
+                "x": 1733.2123411978218,
+                "y": 369.02601330913495
             }
         },
         "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx#level_ice_tileset": {
@@ -44,10 +44,10 @@
                 2
             ],
             "scale": 2.3172,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 262.6014155014673,
-                "y": 100.55239081650267
+                "x": 262.1698601760745,
+                "y": 100.12083549110994
             }
         },
         "tiles/map2.tmx": {
@@ -57,8 +57,8 @@
             "scale": 1.0894,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 325.4084817330641,
-                "y": 223.97650082614282
+                "x": 298.7883238479897,
+                "y": 241.4172939232605
             }
         },
         "tiles/map3.tmx": {
