@@ -28,6 +28,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   }
 
   static const initialHealth = 100;
+  var maxDamageTimer = 100;
+  double damageTimer = 0;
   late final Vector2 _spawn;
   late final double initMaxJumpHoldTime;
   late final ThreeButtonInput _input;
@@ -44,7 +46,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   Future<void> onLoad() async {
     _input = game.input;
     _spawn = map.playerSpawn;
-    initMaxJumpHoldTime = double.parse("$maxJumpHoldTime");
+    initMaxJumpHoldTime = maxJumpHoldTime;
     characterAnimation = PlayerSpriteAnimation();
 
     // Size controls player hitbox, which should be slightly smaller than
@@ -95,9 +97,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     final collidingWithHazard =
         (collisionInfo.downCollision?.tags.contains('Hazard') ?? false);
 
-    final collidingWithInfo =
-        (collisionInfo.downCollision?.tags.contains('Hazard') ?? false);
-    if (status != _Status.freezing && collidingWithHazard) {
+    if (collidingWithHazard && damageTimer > 0.1) {
+      damageTimer += dt;
       meltPlayer();
     } else if (status != _Status.idle && !collidingWithHazard) {
       status = _Status.idle;
@@ -120,7 +121,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     airXVelocity = 0;
     faceLeft = false;
     jumping = false;
-    characterAnimation!.size = Vector2.all(defaultCharacterSize);
+    characterAnimation!.size = Vector2.all(defaultCharacterSize.toDouble());
     //FlameAudio.play('spawn.wav');
   }
 
@@ -191,9 +192,10 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   void meltPlayer() {
     if (characterAnimation != null) {
       // dmg = 10hp
-      health -= collisionInfo.downCollision!.hazardDamage;
-      status = _Status.freezing;
-      const reduction = defaultCharacterSize * 0.1;
+      final damage = collisionInfo.downCollision!.hazardDamage;
+      health -= damage;
+      status = _Status.melting;
+      final reduction = defaultCharacterSize * (damage / 100);
 
       if (characterAnimation!.size.y - reduction > 0) {
         characterAnimation!.size -= Vector2.all(reduction);
@@ -205,13 +207,14 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   void gainSize() {
     if (characterAnimation != null) {
       // dmg = 10hp
-      health -= collisionInfo.downCollision!.hazardDamage;
+      final damage = collisionInfo.downCollision!.hazardDamage;
+      health -= damage;
       status = _Status.freezing;
-      const growth = defaultCharacterSize * 0.1;
+      final growth = defaultCharacterSize * (damage / 100);
 
       if (characterAnimation!.size.y + growth < defaultCharacterSize * 2) {
         characterAnimation!.size += Vector2.all(growth);
-        maxJumpHoldTime += initMaxJumpHoldTime * 0.2;
+        maxJumpHoldTime += maxJumpHoldTime * 0.2;
       }
     }
   }
@@ -227,13 +230,14 @@ class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
 
     animations = {
       _AnimationState.idle: SpriteAnimation.fromFrameData(
-          spriteSheet,
-          SpriteAnimationData.sequenced(
-            amount: 2,
-            stepTime: 0.4,
-            textureSize: Vector2.all(defaultCharacterSize),
-            amountPerRow: 2,
-          ))
+        spriteSheet,
+        SpriteAnimationData.sequenced(
+          amount: 2,
+          stepTime: 0.4,
+          textureSize: Vector2.all(defaultCharacterSize.toDouble()),
+          amountPerRow: 2,
+        ),
+      )
     };
     current = _AnimationState.idle;
   }
