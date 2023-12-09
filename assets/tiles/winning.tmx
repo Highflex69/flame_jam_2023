@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="1">
+ <imagelayer id="2" name="background" offsetx="0" offsety="-26.3974">
+  <image source="../images/winning.jpg" width="512" height="320"/>
+ </imagelayer>
+</map>
