@@ -129,7 +129,7 @@
  </tileset>
  <tileset firstgid="257" source="images.tsx"/>
  <imagelayer id="6" name="Background" offsetx="0" offsety="-59.8276">
-  <image source="../images/kitchen new.jpg" width="512" height="320"/>
+  <image source="../images/kitchen.jpg" width="512" height="320"/>
  </imagelayer>
  <layer id="1" name="Ground" width="32" height="16">
   <data encoding="csv">
