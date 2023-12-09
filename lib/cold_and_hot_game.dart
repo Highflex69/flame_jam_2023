@@ -3,6 +3,7 @@ import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_jam_2023/components/door.dart';
+import 'package:flame_jam_2023/components/hazard.dart';
 import 'package:flame_jam_2023/components/player.dart';
 import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
@@ -21,6 +22,7 @@ class ColdAndHotGame extends LeapGame
     'map1.tmx',
     'map2.tmx',
     'map3.tmx',
+    'winning.tmx',
   ];
 
   var _currentLevel = 'map1.tmx';
@@ -28,8 +30,10 @@ class ColdAndHotGame extends LeapGame
   Future<void> _loadLevel() {
     return loadWorldAndMap(
       tiledMapPath: _currentLevel,
-      tiledObjectHandlers: tiledObjectHandlers,
-      groundTileHandlers: groundTileHandlers,
+      tiledObjectHandlers:
+          _currentLevel != "winning.tmx" ? tiledObjectHandlers : {},
+      groundTileHandlers:
+          _currentLevel != "winning.tmx" ? groundTileHandlers : {},
     );
   }
 
@@ -45,6 +49,7 @@ class ColdAndHotGame extends LeapGame
     //FlameAudio.loop('background.mp3');
     debugMode = true;
     tiledObjectHandlers = {
+      'Hazard': HazardFactory(),
       'Door': DoorFactory(),
     };
 
@@ -66,21 +71,6 @@ class ColdAndHotGame extends LeapGame
       ),
     );
     add(input);
-    /*add(
-      KeyboardListenerComponent(
-        keyDown: {
-          LogicalKeyboardKey.space: (_) {
-            _triggerInputListeners();
-            return false;
-          },
-        },
-        keyUp: {
-          LogicalKeyboardKey.space: (_) {
-            return false;
-          },
-        },
-      ),
-    );*/
 
     await _loadLevel();
     // Don't let the camera move outside the bounds of the map, inset
@@ -119,23 +109,6 @@ class ColdAndHotGame extends LeapGame
   Future<void> levelCleared() async {
     final i = _levels.indexOf(_currentLevel);
     _currentLevel = _levels[(i + 1) % _levels.length];
-
     await _loadLevel();
-  }
-
-  Future<void> goToLevel(String mapName) async {
-    _currentLevel = mapName;
-    await _loadLevel();
-  }
-
-  void addInputListener(VoidCallback listener) => _inputListener.add(listener);
-
-  void removeInputListener(VoidCallback listener) =>
-      _inputListener.remove(listener);
-
-  void _triggerInputListeners() {
-    for (final listener in _inputListener) {
-      listener();
-    }
   }
 }

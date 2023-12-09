@@ -1,12 +1,13 @@
+import 'dart:math';
+
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flame_jam_2023/behaviours/controller_behaviour.dart';
-import 'package:flame_jam_2023/behaviours/player_state_behaviour.dart';
 import 'package:flame_jam_2023/cold_and_hot_game.dart';
 import 'package:flame_jam_2023/components/door.dart';
+import 'package:flame_jam_2023/components/hazard.dart';
 import 'package:leap/leap.dart';
 
-const double defaultCharacterSize = 16;
+const double defaultCharacterSize = 64;
 
 class Player extends JumperCharacter<ColdAndHotGame> {
   Player({super.health = initialHealth}) : super(removeOnDeath: false) {
@@ -20,9 +21,6 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   late final ThreeButtonInput _input;
   late final double initMaxJumpHoldTime;
 
-  //late final ThreeButtonInput _input;
-  late final PlayerStateBehavior stateBehavior =
-      findBehavior<PlayerStateBehavior>();
   var maxDamageTimer = 0.1;
   double timeHoldingJump = 0;
   double damageTimer = 0;
@@ -42,26 +40,11 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     _input = game.input;
     _spawn = map.playerSpawn;
     initMaxJumpHoldTime = maxJumpHoldTime;
-    //characterAnimation = PlayerSpriteAnimation();
     // Size controls player hitbox, which should be slightly smaller than
     // visual size of the sprite.
-    size = Vector2.all(56);
     walkSpeed = map.tileSize * 7;
     minJumpImpulse = world.gravity * jumpImpulse;
-    //add(PlayerControllerBehavior());
-    add(PlayerStateBehavior());
     resetPosition();
-  }
-
-  @override
-  set walking(bool value) {
-    if (!super.walking && value) {
-      setRunningState();
-    } else if (super.walking && !value) {
-      setIdleState();
-    }
-
-    super.walking = value;
   }
 
   @override
@@ -73,7 +56,6 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     if (isDead && jumping) {
       jumping = false;
     }
-
     if (_jumpTimer >= 0) {
       _jumpTimer -= dt;
 
@@ -82,12 +64,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
       }
     }
 
-    if (_jumpTimer <= 0 && isOnGround && walking) {
-      setRunningState();
-    }
-
     updateHandleInput(dt);
-
     updateCollisionInteractions(dt);
 
     if (isDead) {
@@ -103,7 +80,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
 
     if (wasAlive && !isAlive) {
-      //FlameAudio.play('die.wav');
+      FlameAudio.play('death.wav');
     }
   }
 
@@ -113,20 +90,10 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
 
     for (final other in collisionInfo.allCollisions) {
-      if (stateBehavior.state != IceCubeState.melting &&
-          other.tags.contains("Hazard")) {
-        if (damageTimer < maxDamageTimer) {
-          damageTimer += dt;
-          meltPlayer();
-        } else {
-          //reset timer because player is out of harm
-          damageTimer = 0;
-          setIdleState();
-        }
+      if (other is Hazard) {
+        meltPlayer();
       } else if (other is Door) {
         other.enter(this);
-      } else {
-        setIdleState();
       }
     }
   }
@@ -138,15 +105,17 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     velocity.y = 0;
     airXVelocity = 0;
     jumping = false;
-    size = Vector2.all(56);
+    size = Vector2.all(defaultCharacterSize);
+    characterAnimation = PlayerSpriteAnimation();
     //FlameAudio.play('spawn.wav');
   }
 
   void updateHandleInput(double dt) {
-    if (_input.isPressed && _input.isPressedCenter && !jumping) {
-      jumpEffects();
+    if (characterAnimation!.current != _AnimationState.jump &&
+        _input.isPressed &&
+        _input.isPressedCenter) {
+      jumpEffects(dt);
     }
-
 
     if (_input.justPressed && _input.isPressedLeft) {
       // Tapped left.
@@ -188,55 +157,94 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   }
 
   void meltPlayer() {
-    if (characterAnimation != null) {
-      // dmg = 10hp
-      const damage = 10; //collisionInfo.allCollisions.first.hazardDamage;
-      health -= damage;
-      setMeltingState();
-      const reduction = defaultCharacterSize * 0.1;
+    // dmg = 10hp
+    const damage = 10; //collisionInfo.allCollisions.first.hazardDamage;
+    health -= damage;
+    final reduction = Vector2.all(defaultCharacterSize * 0.1);
 
-      if (characterAnimation!.size.y - reduction > 0) {
-        characterAnimation!.size -= Vector2.all(reduction);
-        size -= (size * 0.1);
-        maxJumpHoldTime += maxJumpHoldTime * 0.1;
-      }
+    if (characterAnimation!.size.y - reduction.y > 0) {
+      characterAnimation!.size -= reduction;
+      size -= reduction;
+      maxJumpHoldTime += maxJumpHoldTime * 0.1;
     }
   }
 
-  jumpEffects() {
+  jumpEffects(double dt) {
     jumping = true;
     _jumpTimer = 0.04;
     FlameAudio.play('jump.wav');
-    stateBehavior.state = IceCubeState.jump;
+  }
+}
+
+enum _AnimationState {
+  idle,
+  walk,
+  jump,
+}
+
+class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
+    with HasGameRef<LeapGame> {
+  PlayerSpriteAnimation();
+
+  @override
+  Future<void>? onLoad() async {
+    final spritesheet = await gameRef.images.load('player.png');
+
+    animations = {
+      _AnimationState.idle: SpriteAnimation.fromFrameData(
+        spritesheet,
+        SpriteAnimationData.range(
+          amount: 6,
+          stepTimes: [0.2, 0.2, 0.2],
+          textureSize: Vector2.all(defaultCharacterSize),
+          start: 0,
+          end: 2,
+        ),
+      ),
+      _AnimationState.walk: SpriteAnimation.fromFrameData(
+        spritesheet,
+        SpriteAnimationData.range(
+          amount: 6,
+          stepTimes: [0.2, 0.2],
+          textureSize: Vector2.all(defaultCharacterSize),
+          start: 3,
+          end: 4,
+        ),
+      ),
+      _AnimationState.jump: SpriteAnimation.fromFrameData(
+        spritesheet,
+        SpriteAnimationData.range(
+          amount: 6,
+          stepTimes: [0.2],
+          textureSize: Vector2.all(defaultCharacterSize),
+          start: 5,
+          end: 5,
+        ),
+      ),
+    };
+
+    current = _AnimationState.idle;
+
+    return super.onLoad();
   }
 
-  void setRunningState() {
-    final behavior = stateBehavior;
-    if (behavior.state != IceCubeState.running) {
-      behavior.state = IceCubeState.running;
-    }
-  }
+  @override
+  void update(double dt) {
+    // Default to playing animations
+    playing = true;
 
-  void setIdleState() {
-    stateBehavior.state = IceCubeState.idle;
-  }
-
-  void setMeltingState() {
-    stateBehavior.state = IceCubeState.melting;
-  }
-
-/*void gainSize() {
-    if (characterAnimation != null) {
-      // dmg = 10hp
-      final damage = collisionInfo.downCollision!.hazardDamage;
-      health -= damage;
-      status = _Status.freezing;
-      final growth = defaultCharacterSize * (damage / 100);
-
-      if (characterAnimation!.size.y + growth < defaultCharacterSize * 2) {
-        characterAnimation!.size += Vector2.all(growth);
-        maxJumpHoldTime += maxJumpHoldTime * 0.2;
+    if (character.isOnGround) {
+      // On the ground.
+      if (character.velocity.x.abs() > 0) {
+        current = _AnimationState.walk;
+      } else {
+        current = _AnimationState.idle;
+      }
+    } else {
+      if (character.velocity.y < 0) {
+        current = _AnimationState.jump;
       }
     }
-  }*/
+    super.update(dt);
+  }
 }
