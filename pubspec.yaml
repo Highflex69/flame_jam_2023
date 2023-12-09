@@ -28,5 +28,4 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/tiles/map.tmx
-    - assets/tiles/spritemap.tsx
+    - assets/tiles/

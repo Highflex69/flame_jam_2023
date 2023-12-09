@@ -28,7 +28,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   }
 
   static const initialHealth = 100;
-  var maxDamageTimer = 100;
+  var maxDamageTimer = 0.1;
   double damageTimer = 0;
   late final Vector2 _spawn;
   late final double initMaxJumpHoldTime;
@@ -94,21 +94,22 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     if (isDead) {
       return;
     }
-    final collidingWithHazard =
-        (collisionInfo.downCollision?.tags.contains('Hazard') ?? false);
-
-    if (collidingWithHazard && damageTimer > 0.1) {
-      damageTimer += dt;
-      meltPlayer();
-    } else if (status != _Status.idle && !collidingWithHazard) {
-      status = _Status.idle;
-    }
 
     for (final other in collisionInfo.allCollisions) {
-      if (other is Door && _input.justPressed && _input.isPressedCenter) {
+      if (status != _Status.melting && other.tags.contains("Hazard")) {
+        if (damageTimer < maxDamageTimer) {
+          damageTimer += dt;
+          meltPlayer();
+        } else {
+          //reset timer because player is out of harm
+          damageTimer = 0;
+          status = _Status.idle;
+        }
+      } else if (other is Door) {
         other.enter(this);
-      } else if (other is InfoText) {
-        gainSize();
+        resetPosition();
+      } else {
+        status = _Status.idle;
       }
     }
   }
@@ -122,6 +123,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     faceLeft = false;
     jumping = false;
     characterAnimation!.size = Vector2.all(defaultCharacterSize.toDouble());
+    size = Vector2(10, 24);
     //FlameAudio.play('spawn.wav');
   }
 
@@ -145,9 +147,10 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
     if (_input.justPressed && _input.isPressedCenter && !jumping) {
       jumping = true;
+      meltPlayer();
       //airXVelocity = walkSpeed;
       walking = true;
-      faceLeft = _input.isPressedLeft;
+      //dfaceLeft = _input.isPressedLeft;
       //faceRight = _input.isPressedRight;
     }
     if (_input.justPressed && _input.isPressedLeft) {
@@ -192,13 +195,14 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   void meltPlayer() {
     if (characterAnimation != null) {
       // dmg = 10hp
-      final damage = collisionInfo.downCollision!.hazardDamage;
+      const damage = 10; //collisionInfo.allCollisions.first.hazardDamage;
       health -= damage;
       status = _Status.melting;
-      final reduction = defaultCharacterSize * (damage / 100);
+      const reduction = defaultCharacterSize * 0.1;
 
       if (characterAnimation!.size.y - reduction > 0) {
         characterAnimation!.size -= Vector2.all(reduction);
+        size -= (size * 0.1);
         maxJumpHoldTime -= maxJumpHoldTime * 0.2;
       }
     }

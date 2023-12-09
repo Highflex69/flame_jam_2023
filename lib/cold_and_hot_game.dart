@@ -2,14 +2,13 @@ import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
 import 'package:flame_jam_2023/components/door.dart';
-import 'package:flame_jam_2023/components/info_text.dart';
 import 'package:flame_jam_2023/components/player.dart';
 import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
 
 class ColdAndHotGame extends LeapGame
     with TapCallbacks, HasKeyboardHandlerComponents {
-  final Player player = Player();
+  Player? player;
   late final ThreeButtonInput input;
   late final Map<String, TiledObjectHandler> tiledObjectHandlers;
   late final Map<String, GroundTileHandler> groundTileHandlers;
@@ -17,10 +16,12 @@ class ColdAndHotGame extends LeapGame
   ColdAndHotGame({required super.tileSize});
 
   static const _levels = [
-    'map.tmx',
+    'map1.tmx',
+    'map2.tmx',
+    'map3.tmx',
   ];
 
-  var _currentLevel = 'map.tmx';
+  var _currentLevel = 'map1.tmx';
 
   Future<void> _loadLevel() {
     return loadWorldAndMap(
@@ -32,6 +33,11 @@ class ColdAndHotGame extends LeapGame
 
   @override
   Future<void> onLoad() async {
+    debugMode = true;
+    tiledObjectHandlers = {
+      'Door': DoorFactory(),
+    };
+
     groundTileHandlers = {
       'OneWayTopPlatform': OneWayTopPlatformHandler(),
     };
@@ -41,11 +47,6 @@ class ColdAndHotGame extends LeapGame
       width: tileSize * 32,
       height: tileSize * 16,
     );
-
-    tiledObjectHandlers = {
-      'Door': DoorFactory(),
-      'InfoText': InfoTextFactory(),
-    };
 
     input = ThreeButtonInput(
       keyboardInput: ThreeButtonKeyboardInput(
@@ -57,8 +58,6 @@ class ColdAndHotGame extends LeapGame
     add(input);
 
     await _loadLevel();
-    world.add(player);
-
     // Don't let the camera move outside the bounds of the map, inset
     // by half the viewport size to the edge of the camera if flush with the
     // edge of the map.
@@ -73,18 +72,28 @@ class ColdAndHotGame extends LeapGame
       ),
     );
 
-    world.add(player);
-    camera.follow(player);
+    player = Player();
+    world.add(player!);
+    camera.follow(player!);
   }
 
   @override
   void onMapUnload(LeapMap map) {
-    player.removeFromParent();
+    player?.removeFromParent();
+  }
+
+  @override
+  void onMapLoaded(LeapMap map) {
+    if (player != null) {
+      player = Player();
+      world.add(player!);
+      camera.follow(player!);
+    }
   }
 
   Future<void> levelCleared() async {
-    //final i = _levels.indexOf(_currentLevel);
-    //_currentLevel = _levels[(i + 1) % _levels.length];
+    final i = _levels.indexOf(_currentLevel);
+    _currentLevel = _levels[(i + 1) % _levels.length];
 
     await _loadLevel();
   }
