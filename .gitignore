@@ -62,3 +62,4 @@ macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
 macos/Runner.xcworkspace/contents.xcworkspacedata
 macos/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 macos/RunnerTests/RunnerTests.swift
+.DS_Store

@@ -23,12 +23,12 @@
  <tile id="39" type="Hazard"/>
  <tile id="54" type="Hazard"/>
  <tile id="55" type="Hazard"/>
- <tile id="57" type="Exit"/>
- <tile id="58" type="Exit"/>
+ <tile id="57" type="Door"/>
+ <tile id="58" type="Door"/>
  <tile id="70" type="Hazard"/>
  <tile id="71" type="Hazard"/>
- <tile id="73" type="Exit"/>
- <tile id="74" type="Exit"/>
+ <tile id="73" type="Door"/>
+ <tile id="74" type="Door"/>
  <tile id="80" type="Hazard">
   <properties>
    <property name="Damage" type="int" value="50"/>
@@ -59,8 +59,8 @@
  <tile id="85" type="Hazard"/>
  <tile id="86" type="Hazard"/>
  <tile id="87" type="Hazard"/>
- <tile id="89" type="Exit"/>
- <tile id="90" type="Exit"/>
+ <tile id="89" type="Door"/>
+ <tile id="90" type="Door"/>
  <tile id="96" type="Hazard">
   <properties>
    <property name="Damage" type="int" value="50"/>
@@ -91,8 +91,8 @@
  <tile id="101" type="Hazard"/>
  <tile id="102" type="Hazard"/>
  <tile id="103" type="Hazard"/>
- <tile id="105" type="Exit"/>
- <tile id="106" type="Exit"/>
+ <tile id="105" type="Door"/>
+ <tile id="106" type="Door"/>
  <tile id="114">
   <animation>
    <frame tileid="114" duration="100"/>
