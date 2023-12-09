@@ -43,11 +43,11 @@
                 3,
                 2
             ],
-            "scale": 3.1653,
-            "selectedLayer": 3,
+            "scale": 2.3402,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 245.63232552996556,
-                "y": 98.25293021198624
+                "x": 349.75643107426714,
+                "y": 113.6654986753269
             }
         },
         "tiles/map2.tmx": {
@@ -74,6 +74,14 @@
         },
         "tiles/spritemap.tsx": {
             "dynamicWrapping": false
+        },
+        "tiles/winning.tmx": {
+            "scale": 1.36376953125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 222.5449337629789,
+                "y": 123.921231650555
+            }
         }
     },
     "last.imagePath": "/Users/johansson/source/flame_jam_2023/assets/images",
