@@ -40,26 +40,29 @@
                 3,
                 2
             ],
-            "scale": 5.083,
-            "selectedLayer": 3,
+            "scale": 1.2682,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 472.16210899075344,
-                "y": 186.60240015738736
+                "x": 127.74010408452924,
+                "y": 275.5874467749566
             }
         },
         "tiles/map2.tmx": {
-            "scale": 1.0271,
-            "selectedLayer": 1,
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 1.0545,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 271.6385940998929,
-                "y": 128.03037678901765
+                "x": 163.11047889995257,
+                "y": 196.77572309151262
             }
         },
         "tiles/map3.tmx": {
             "scale": 1.6813,
-            "selectedLayer": 1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 192.11324570273,
+                "x": 191.51846785225715,
                 "y": 87.13495509427227
             }
         }
@@ -73,7 +76,7 @@
     "openFiles": [
     ],
     "project": "flame_jam_assets.tiled-project",
-    "property.type": "int",
+    "property.type": "string",
     "recentFiles": [
         "tiles/map2.tmx",
         "tiles/map1.tmx",
