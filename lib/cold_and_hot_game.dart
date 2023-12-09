@@ -16,10 +16,10 @@ class ColdAndHotGame extends LeapGame
   ColdAndHotGame({required super.tileSize});
 
   static const _levels = [
-    'map_everything.tmx',
+    'map.tmx',
   ];
 
-  var _currentLevel = 'map_everything.tmx';
+  var _currentLevel = 'map.tmx';
 
   Future<void> _loadLevel() {
     return loadWorldAndMap(

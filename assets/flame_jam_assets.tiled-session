@@ -1,0 +1,56 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx": {
+            "expandedObjectLayers": [
+                10
+            ],
+            "scale": 0.4796,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 638.0316930775646,
+                "y": 200.1668056713928
+            }
+        },
+        "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx#level_ice_tileset": {
+            "scaleInDock": 1
+        },
+        "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx#level_standard_tileset": {
+            "scaleInDock": 1
+        },
+        "tiles/map.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.3968,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 370.46370967741933,
+                "y": 471.27016129032256
+            }
+        }
+    },
+    "last.imagePath": "/Users/johansson/source/flame_jam_2023/assets/images",
+    "map.height": 40,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 120,
+    "openFiles": [
+    ],
+    "project": "flame_jam_assets.tiled-project",
+    "property.type": "int",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
