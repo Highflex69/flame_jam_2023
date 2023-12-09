@@ -37,21 +37,22 @@
         },
         "tiles/map1.tmx": {
             "expandedObjectLayers": [
+                3,
                 2
             ],
-            "scale": 1.1757,
-            "selectedLayer": 1,
+            "scale": 5.083,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 357.6592668197669,
-                "y": 180.3181083609764
+                "x": 472.16210899075344,
+                "y": 186.60240015738736
             }
         },
         "tiles/map2.tmx": {
             "scale": 1.0271,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 159.67286534904105,
-                "y": 102.71638594099895
+                "x": 271.6385940998929,
+                "y": 128.03037678901765
             }
         },
         "tiles/map3.tmx": {
