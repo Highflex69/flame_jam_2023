@@ -1,8 +1,9 @@
 import 'package:flame/camera.dart';
 import 'package:flame/events.dart';
 import 'package:flame/experimental.dart';
-import 'package:flame_jam_2023/door.dart';
-import 'package:flame_jam_2023/player.dart';
+import 'package:flame_jam_2023/components/door.dart';
+import 'package:flame_jam_2023/components/info_text.dart';
+import 'package:flame_jam_2023/components/player.dart';
 import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
 
@@ -43,6 +44,7 @@ class ColdAndHotGame extends LeapGame
 
     tiledObjectHandlers = {
       'Door': DoorFactory(),
+      'InfoText': InfoTextFactory(),
     };
 
     input = ThreeButtonInput(

@@ -2,7 +2,8 @@ import 'dart:ui';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame_audio/flame_audio.dart';
-import 'package:flame_jam_2023/door.dart';
+import 'package:flame_jam_2023/components/door.dart';
+import 'package:flame_jam_2023/components/info_text.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_jam_2023/cold_and_hot_game.dart';
@@ -28,6 +29,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
   static const initialHealth = 100;
   late final Vector2 _spawn;
+  late final double initMaxJumpHoldTime;
   late final ThreeButtonInput _input;
   double timeHoldingJump = 0;
   var status = _Status.idle;
@@ -42,7 +44,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   Future<void> onLoad() async {
     _input = game.input;
     _spawn = map.playerSpawn;
-
+    initMaxJumpHoldTime = double.parse("$maxJumpHoldTime");
     characterAnimation = PlayerSpriteAnimation();
 
     // Size controls player hitbox, which should be slightly smaller than
@@ -92,8 +94,11 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
     final collidingWithHazard =
         (collisionInfo.downCollision?.tags.contains('Hazard') ?? false);
-    if (status != _Status.melting && collidingWithHazard) {
-      melt();
+
+    final collidingWithInfo =
+        (collisionInfo.downCollision?.tags.contains('Hazard') ?? false);
+    if (status != _Status.freezing && collidingWithHazard) {
+      meltPlayer();
     } else if (status != _Status.idle && !collidingWithHazard) {
       status = _Status.idle;
     }
@@ -101,6 +106,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     for (final other in collisionInfo.allCollisions) {
       if (other is Door && _input.justPressed && _input.isPressedCenter) {
         other.enter(this);
+      } else if (other is InfoText) {
+        gainSize();
       }
     }
   }
@@ -181,15 +188,31 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
   }
 
-  void melt() {
-    // dmg = 10hp
-    health -= collisionInfo.downCollision!.hazardDamage;
-    status = _Status.melting;
-    const reduction = defaultCharacterSize * 0.1;
-    if (characterAnimation != null &&
-        characterAnimation!.size.y - reduction > 0) {
-      characterAnimation!.size -= Vector2.all(reduction);
-      maxJumpHoldTime -= maxJumpHoldTime * 0.2;
+  void meltPlayer() {
+    if (characterAnimation != null) {
+      // dmg = 10hp
+      health -= collisionInfo.downCollision!.hazardDamage;
+      status = _Status.freezing;
+      const reduction = defaultCharacterSize * 0.1;
+
+      if (characterAnimation!.size.y - reduction > 0) {
+        characterAnimation!.size -= Vector2.all(reduction);
+        maxJumpHoldTime -= maxJumpHoldTime * 0.2;
+      }
+    }
+  }
+
+  void gainSize() {
+    if (characterAnimation != null) {
+      // dmg = 10hp
+      health -= collisionInfo.downCollision!.hazardDamage;
+      status = _Status.freezing;
+      const growth = defaultCharacterSize * 0.1;
+
+      if (characterAnimation!.size.y + growth < defaultCharacterSize * 2) {
+        characterAnimation!.size += Vector2.all(growth);
+        maxJumpHoldTime += initMaxJumpHoldTime * 0.2;
+      }
     }
   }
 }
