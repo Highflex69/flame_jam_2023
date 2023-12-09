@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="4">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="32" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="8">
  <tileset firstgid="1" source="spritemap.tsx"/>
+ <tileset firstgid="257" source="images.tsx"/>
+ <objectgroup id="5" name="View">
+  <object id="7" gid="257" x="-5.7495" y="265.666" width="522.478" height="326.6"/>
+ </objectgroup>
  <layer id="1" name="Ground" width="32" height="16">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
