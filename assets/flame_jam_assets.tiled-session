@@ -14,8 +14,8 @@
             "scale": 0.4959,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1412.5831820931637,
-                "y": 371.04254890098815
+                "x": 1772.534785238959,
+                "y": 355.91853196208916
             }
         },
         "/Users/johansson/leap/examples/standard_platformer/assets/tiles/map_everything.tmx#level_ice_tileset": {
@@ -42,8 +42,8 @@
             "scale": 1.1757,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 247.51212043888745,
-                "y": 166.28391596495703
+                "x": 357.6592668197669,
+                "y": 180.3181083609764
             }
         },
         "tiles/map2.tmx": {
