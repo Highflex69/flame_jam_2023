@@ -111,7 +111,6 @@ class PlayerStateBehavior extends Behavior<Player> {
             amount: 6,
             stepTimes: [0.2],
             textureSize: Vector2.all(animationSize),
-            loop: false,
             start: 5,
             end: 5,
           ),
@@ -121,7 +120,6 @@ class PlayerStateBehavior extends Behavior<Player> {
 
     final paint = Paint()..isAntiAlias = false;
 
-    final centerPosition = parent.size / 2 - Vector2(0, parent.size.y / 2);
     _stateMap = {
       IceCubeState.idle: SpriteAnimationComponent(
         animation: idleAnimation,

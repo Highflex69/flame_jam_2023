@@ -29,6 +29,21 @@ class PlayerControllerBehavior extends Behavior<Player> {
       return;
     }
 
+    // If is walking, jump
+    if (parent.walking && parent.isOnGround) {
+      parent
+        ..jumpEffects()
+        ..jumping = true;
+      _jumpTimer = 0.04;
+      return;
+    }
+  }
+
+  void _handleJumpInput() {
+    if (parent.isDead) {
+      return;
+    }
+
     // If is no walking, start walking
     if (!parent.walking) {
       parent.walking = true;

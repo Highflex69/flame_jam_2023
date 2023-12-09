@@ -17,6 +17,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   static const jumpImpulse = .6;
 
   late final Vector2 _spawn;
+  late final ThreeButtonInput _input;
   late final double initMaxJumpHoldTime;
 
   //late final ThreeButtonInput _input;
@@ -38,7 +39,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    //_input = game.input;
+    _input = game.input;
     _spawn = map.playerSpawn;
     initMaxJumpHoldTime = maxJumpHoldTime;
     //characterAnimation = PlayerSpriteAnimation();
@@ -47,7 +48,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     size = Vector2.all(56);
     walkSpeed = map.tileSize * 7;
     minJumpImpulse = world.gravity * jumpImpulse;
-    add(PlayerControllerBehavior());
+    //add(PlayerControllerBehavior());
     add(PlayerStateBehavior());
     resetPosition();
   }
@@ -69,6 +70,10 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
     final wasAlive = isAlive;
 
+    if (isDead && jumping) {
+      jumping = false;
+    }
+
     if (_jumpTimer >= 0) {
       _jumpTimer -= dt;
 
@@ -76,6 +81,12 @@ class Player extends JumperCharacter<ColdAndHotGame> {
         jumping = false;
       }
     }
+
+    if (_jumpTimer <= 0 && isOnGround && walking) {
+      setRunningState();
+    }
+
+    updateHandleInput(dt);
 
     updateCollisionInteractions(dt);
 
@@ -126,11 +137,54 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     velocity.x = 0;
     velocity.y = 0;
     airXVelocity = 0;
-    faceLeft = false;
     jumping = false;
-    //characterAnimation!.size = Vector2.all(defaultCharacterSize.toDouble());
     size = Vector2.all(56);
     //FlameAudio.play('spawn.wav');
+  }
+
+  void updateHandleInput(double dt) {
+    if (_input.isPressed && _input.isPressedCenter && !jumping) {
+      jumpEffects();
+    }
+
+
+    if (_input.justPressed && _input.isPressedLeft) {
+      // Tapped left.
+      if (walking) {
+        if (!faceLeft) {
+          // Moving right, stop.
+          if (isOnGround) {
+            walking = false;
+          }
+          faceLeft = true;
+        }
+      } else {
+        // Standing still.
+        walking = true;
+        faceLeft = true;
+        if (isOnGround) {
+          airXVelocity = walkSpeed;
+        }
+      }
+    } else if (_input.justPressed && _input.isPressedRight) {
+      // Tapped right.
+      if (walking) {
+        if (faceLeft) {
+          // Moving left, stop.
+          if (isOnGround) {
+            walking = false;
+          }
+          faceLeft = false;
+        }
+      } else {
+        // Standing still.
+        walking = true;
+        faceLeft = false;
+        if (isOnGround) {
+          airXVelocity = walkSpeed;
+        }
+      }
+    }
   }
 
   void meltPlayer() {
@@ -150,6 +204,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   }
 
   jumpEffects() {
+    jumping = true;
+    _jumpTimer = 0.04;
     FlameAudio.play('jump.wav');
     stateBehavior.state = IceCubeState.jump;
   }
@@ -157,10 +213,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   void setRunningState() {
     final behavior = stateBehavior;
     if (behavior.state != IceCubeState.running) {
-      const newRunState = IceCubeState.running;
-      if (behavior.state != newRunState) {
-        behavior.state = newRunState;
-      }
+      behavior.state = IceCubeState.running;
     }
   }
 
@@ -187,26 +240,3 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
   }*/
 }
-
-/*class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
-    with HasGameRef<LeapGame> {
-  PlayerSpriteAnimation() : super(scale: Vector2.all(2));
-
-  @override
-  Future<dynamic> onLoad() async {
-    final spriteSheet = await gameRef.images.load('player_spritesheet.png');
-
-    animations = {
-      _AnimationState.idle: SpriteAnimation.fromFrameData(
-        spriteSheet,
-        SpriteAnimationData.sequenced(
-          amount: 2,
-          stepTime: 0.4,
-          textureSize: Vector2.all(defaultCharacterSize.toDouble()),
-          amountPerRow: 2,
-        ),
-      )
-    };
-    current = _AnimationState.idle;
-  }
-}*/

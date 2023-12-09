@@ -58,7 +58,6 @@ class ColdAndHotGame extends LeapGame
       height: tileSize * 16,
     );
 
-    /*
     input = ThreeButtonInput(
       keyboardInput: ThreeButtonKeyboardInput(
         leftKeys: {PhysicalKeyboardKey.keyA},
@@ -66,8 +65,8 @@ class ColdAndHotGame extends LeapGame
         rightKeys: {PhysicalKeyboardKey.keyD},
       ),
     );
-    add(input);*/
-    add(
+    add(input);
+    /*add(
       KeyboardListenerComponent(
         keyDown: {
           LogicalKeyboardKey.space: (_) {
@@ -81,7 +80,7 @@ class ColdAndHotGame extends LeapGame
           },
         },
       ),
-    );
+    );*/
 
     await _loadLevel();
     // Don't let the camera move outside the bounds of the map, inset
