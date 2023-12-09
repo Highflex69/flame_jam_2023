@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="120" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="2">
  <tileset firstgid="1" source="spritemap.tsx"/>
- <imagelayer id="6" name="Image Layer 1" offsetx="-2.21976" offsety="-12.2087" parallaxx="1.1" parallaxy="1.1">
+ <imagelayer id="6" name="Image Layer 1" offsetx="125.416" offsety="-115.427" parallaxx="1.1" parallaxy="1.1">
   <image source="../images/background.jpg" width="1024" height="1024"/>
  </imagelayer>
  <layer id="1" name="Ground" width="120" height="40">
