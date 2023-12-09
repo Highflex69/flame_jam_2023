@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.10.2" name="spritemap" tilewidth="16" tileheight="16" tilecount="256" columns="16">
  <image source="../images/spritemap.png" width="256" height="256"/>
+ <tile id="8" type="OneWayTopPlatform"/>
+ <tile id="19" type="OneWayTopPlatform"/>
+ <tile id="20" type="OneWayTopPlatform"/>
+ <tile id="21" type="OneWayTopPlatform"/>
  <tile id="35" type="Hazard">
   <properties>
    <property name="Damage" type="int" value="10"/>
@@ -19,8 +23,12 @@
  <tile id="39" type="Hazard"/>
  <tile id="54" type="Hazard"/>
  <tile id="55" type="Hazard"/>
+ <tile id="57" type="Exit"/>
+ <tile id="58" type="Exit"/>
  <tile id="70" type="Hazard"/>
  <tile id="71" type="Hazard"/>
+ <tile id="73" type="Exit"/>
+ <tile id="74" type="Exit"/>
  <tile id="80" type="Hazard">
   <properties>
    <property name="Damage" type="int" value="50"/>
@@ -51,6 +59,8 @@
  <tile id="85" type="Hazard"/>
  <tile id="86" type="Hazard"/>
  <tile id="87" type="Hazard"/>
+ <tile id="89" type="Exit"/>
+ <tile id="90" type="Exit"/>
  <tile id="96" type="Hazard">
   <properties>
    <property name="Damage" type="int" value="50"/>
@@ -81,6 +91,8 @@
  <tile id="101" type="Hazard"/>
  <tile id="102" type="Hazard"/>
  <tile id="103" type="Hazard"/>
+ <tile id="105" type="Exit"/>
+ <tile id="106" type="Exit"/>
  <tile id="114">
   <animation>
    <frame tileid="114" duration="100"/>
