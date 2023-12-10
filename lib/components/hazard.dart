@@ -10,10 +10,6 @@ class Hazard extends PhysicalEntity<ColdAndHotGame> {
           size: Vector2(object.width, object.height),
           static: true,
         );
-
-  void enter(PhysicalEntity other) {
-    gameRef.levelCleared();
-  }
 }
 
 class HazardFactory implements TiledObjectHandler {

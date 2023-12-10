@@ -38,6 +38,7 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   double _jumpTimer = 0;
   double _currentJumpTimer = 0.04;
   final _defaultJumpTimer = 0.04;
+  bool isGameOver = false;
 
   @override
   Future<void> onLoad() async {
@@ -53,6 +54,9 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   @override
   void update(double dt) {
     super.update(dt);
+    if (gameRef.isGameOver) {
+      return;
+    }
 
     final wasAlive = isAlive;
 
@@ -119,7 +123,6 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     _currentJumpTimer = _defaultJumpTimer;
     size = Vector2(scaledCharacterSizeX, scaledCharacterSizeX);
     characterAnimation = PlayerSpriteAnimation();
-    //FlameAudio.play('spawn.wav');
   }
 
   void updateHandleInput(double dt) {
@@ -170,7 +173,6 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
   void meltPlayer() {
     // dmg = 10hp
-    print("damage tick!");
     const damage = 10;
     health -= damage;
     final reduction = Vector2(

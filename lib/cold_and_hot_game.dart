@@ -5,6 +5,7 @@ import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_jam_2023/components/door.dart';
 import 'package:flame_jam_2023/components/hazard.dart';
 import 'package:flame_jam_2023/components/player.dart';
+import 'package:flame_jam_2023/components/winning_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:leap/leap.dart';
 
@@ -14,7 +15,6 @@ class ColdAndHotGame extends LeapGame
   late final ThreeButtonInput input;
   late final Map<String, TiledObjectHandler> tiledObjectHandlers;
   late final Map<String, GroundTileHandler> groundTileHandlers;
-  final List<VoidCallback> _inputListener = [];
 
   ColdAndHotGame({required super.tileSize});
 
@@ -26,15 +26,20 @@ class ColdAndHotGame extends LeapGame
   ];
 
   var _currentLevel = 'map1.tmx';
+  bool isGameOver = false;
 
-  Future<void> _loadLevel() {
-    return loadWorldAndMap(
-      tiledMapPath: _currentLevel,
-      tiledObjectHandlers:
-          _currentLevel != "winning.tmx" ? tiledObjectHandlers : {},
-      groundTileHandlers:
-          _currentLevel != "winning.tmx" ? groundTileHandlers : {},
-    );
+  Future<void> _loadLevel() async {
+    if (_currentLevel != "winning.tmx") {
+      return loadWorldAndMap(
+        tiledMapPath: _currentLevel,
+        tiledObjectHandlers: tiledObjectHandlers,
+        groundTileHandlers: groundTileHandlers,
+      );
+    } else {
+      isGameOver = true;
+      world.add(WinningScreen());
+    }
+    return;
   }
 
   @override
@@ -46,8 +51,7 @@ class ColdAndHotGame extends LeapGame
   @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
-    FlameAudio.loop('background.mp3');
-    debugMode = true;
+    //FlameAudio.loop('background.mp3');
     tiledObjectHandlers = {
       'Hazard': HazardFactory(),
       'Door': DoorFactory(),

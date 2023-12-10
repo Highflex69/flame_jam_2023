@@ -12,7 +12,9 @@ class Door extends PhysicalEntity<ColdAndHotGame> {
         );
 
   void levelCleared() {
-    gameRef.levelCleared();
+    if (!gameRef.isGameOver) {
+      gameRef.levelCleared();
+    }
   }
 }
 
