@@ -11,7 +11,7 @@ class Door extends PhysicalEntity<ColdAndHotGame> {
           static: true,
         );
 
-  void enter(PhysicalEntity other) {
+  void levelCleared() {
     gameRef.levelCleared();
   }
 }

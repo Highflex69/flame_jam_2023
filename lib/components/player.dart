@@ -7,7 +7,10 @@ import 'package:flame_jam_2023/components/door.dart';
 import 'package:flame_jam_2023/components/hazard.dart';
 import 'package:leap/leap.dart';
 
-const double defaultCharacterSize = 64;
+const double defaultCharacterSizeX = 384 / 6;
+const double defaultCharacterSizeY = 55;
+const double scaledCharacterSizeX = defaultCharacterSizeX * 0.5;
+const double scaledCharacterSizeY = defaultCharacterSizeY * 0.5;
 
 class Player extends JumperCharacter<ColdAndHotGame> {
   Player({super.health = initialHealth}) : super(removeOnDeath: false) {
@@ -22,8 +25,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
   late final double initMaxJumpHoldTime;
 
   var maxDamageTimer = 0.1;
-  double timeHoldingJump = 0;
   double damageTimer = 0;
+  double timeHoldingJump = 0;
 
   double deadTime = 0;
 
@@ -33,6 +36,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
   /// test setup:
   double _jumpTimer = 0;
+  double _currentJumpTimer = 0.04;
+  final _defaultJumpTimer = 0.04;
 
   @override
   Future<void> onLoad() async {
@@ -40,8 +45,6 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     _input = game.input;
     _spawn = map.playerSpawn;
     initMaxJumpHoldTime = maxJumpHoldTime;
-    // Size controls player hitbox, which should be slightly smaller than
-    // visual size of the sprite.
     walkSpeed = map.tileSize * 7;
     minJumpImpulse = world.gravity * jumpImpulse;
     resetPosition();
@@ -90,10 +93,18 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     }
 
     for (final other in collisionInfo.allCollisions) {
-      if (other is Hazard) {
-        meltPlayer();
+      final isHazard =
+          collisionInfo.downCollision?.tags.contains("Hazard") ?? false;
+      if (other is Hazard || isHazard) {
+        if (damageTimer >= 0) {
+          damageTimer -= dt;
+
+          if (damageTimer <= 0) {
+            meltPlayer();
+          }
+        }
       } else if (other is Door) {
-        other.enter(this);
+        other.levelCleared();
       }
     }
   }
@@ -105,7 +116,8 @@ class Player extends JumperCharacter<ColdAndHotGame> {
     velocity.y = 0;
     airXVelocity = 0;
     jumping = false;
-    size = Vector2.all(defaultCharacterSize);
+    _currentJumpTimer = _defaultJumpTimer;
+    size = Vector2(scaledCharacterSizeX, scaledCharacterSizeX);
     characterAnimation = PlayerSpriteAnimation();
     //FlameAudio.play('spawn.wav');
   }
@@ -158,20 +170,26 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
   void meltPlayer() {
     // dmg = 10hp
-    const damage = 10; //collisionInfo.allCollisions.first.hazardDamage;
+    print("damage tick!");
+    const damage = 10;
     health -= damage;
-    final reduction = Vector2.all(defaultCharacterSize * 0.1);
-
+    final reduction = Vector2(
+          scaledCharacterSizeX,
+          scaledCharacterSizeX,
+        ) *
+        0.1;
+    damageTimer = 0.5;
     if (characterAnimation!.size.y - reduction.y > 0) {
       characterAnimation!.size -= reduction;
       size -= reduction;
-      maxJumpHoldTime += maxJumpHoldTime * 0.1;
+      _currentJumpTimer = _currentJumpTimer * 1.3;
+      maxJumpHoldTime += maxJumpHoldTime * 0.2;
     }
   }
 
   jumpEffects(double dt) {
     jumping = true;
-    _jumpTimer = 0.04;
+    _jumpTimer = _currentJumpTimer;
     FlameAudio.play('jump.wav');
   }
 }
@@ -184,7 +202,7 @@ enum _AnimationState {
 
 class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
     with HasGameRef<LeapGame> {
-  PlayerSpriteAnimation();
+  PlayerSpriteAnimation() : super(scale: Vector2.all(0.5));
 
   @override
   Future<void>? onLoad() async {
@@ -196,7 +214,10 @@ class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
         SpriteAnimationData.range(
           amount: 6,
           stepTimes: [0.2, 0.2, 0.2],
-          textureSize: Vector2.all(defaultCharacterSize),
+          textureSize: Vector2(
+            defaultCharacterSizeX,
+            defaultCharacterSizeY,
+          ),
           start: 0,
           end: 2,
         ),
@@ -206,7 +227,10 @@ class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
         SpriteAnimationData.range(
           amount: 6,
           stepTimes: [0.2, 0.2],
-          textureSize: Vector2.all(defaultCharacterSize),
+          textureSize: Vector2(
+            defaultCharacterSizeX,
+            defaultCharacterSizeY,
+          ),
           start: 3,
           end: 4,
         ),
@@ -216,7 +240,10 @@ class PlayerSpriteAnimation extends CharacterAnimation<_AnimationState, Player>
         SpriteAnimationData.range(
           amount: 6,
           stepTimes: [0.2],
-          textureSize: Vector2.all(defaultCharacterSize),
+          textureSize: Vector2(
+            defaultCharacterSizeX,
+            defaultCharacterSizeY,
+          ),
           start: 5,
           end: 5,
         ),

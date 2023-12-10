@@ -46,7 +46,7 @@ class ColdAndHotGame extends LeapGame
   @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
-    //FlameAudio.loop('background.mp3');
+    FlameAudio.loop('background.mp3');
     debugMode = true;
     tiledObjectHandlers = {
       'Hazard': HazardFactory(),
