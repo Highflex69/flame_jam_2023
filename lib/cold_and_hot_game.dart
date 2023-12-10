@@ -39,8 +39,6 @@ class ColdAndHotGame extends LeapGame
       );
     } else {
       isGameOver = true;
-      await backgroundAudioPlayer?.stop();
-      await FlameAudio.loop("winning.mp3");
       world.add(WinningScreen());
     }
   }
@@ -123,7 +121,7 @@ class ColdAndHotGame extends LeapGame
   KeyEventResult onKeyEvent(
       RawKeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     super.onKeyEvent(event, keysPressed);
-    if (backgroundAudioPlayer == null) {
+    if (backgroundAudioPlayer == null && !isGameOver) {
       initAudioPlayer();
     }
     return KeyEventResult.ignored;
