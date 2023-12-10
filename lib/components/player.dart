@@ -1,10 +1,10 @@
-import 'dart:math';
-
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flame_jam_2023/cold_and_hot_game.dart';
 import 'package:flame_jam_2023/components/door.dart';
 import 'package:flame_jam_2023/components/hazard.dart';
+import 'package:flutter/material.dart';
 import 'package:leap/leap.dart';
 
 const double defaultCharacterSizeX = 384 / 6;
@@ -173,8 +173,18 @@ class Player extends JumperCharacter<ColdAndHotGame> {
 
   void meltPlayer() {
     // dmg = 10hp
+    FlameAudio.play('fire_damage.mp3', volume: 0.7);
     const damage = 10;
     health -= damage;
+    characterAnimation?.add(ColorEffect(
+      Colors.red,
+      EffectController(
+        duration: 0.3,
+        reverseDuration: 0.2,
+      ),
+      // Means, applies from 0% to 80% of the color
+      opacityTo: 0.5,
+    ));
     final reduction = Vector2(
           scaledCharacterSizeX,
           scaledCharacterSizeX,

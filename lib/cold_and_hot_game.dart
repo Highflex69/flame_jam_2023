@@ -15,6 +15,7 @@ class ColdAndHotGame extends LeapGame
   late final ThreeButtonInput input;
   late final Map<String, TiledObjectHandler> tiledObjectHandlers;
   late final Map<String, GroundTileHandler> groundTileHandlers;
+  late final AudioPlayer backgroundAudioPlayer;
 
   ColdAndHotGame({required super.tileSize});
 
@@ -38,8 +39,9 @@ class ColdAndHotGame extends LeapGame
     } else {
       isGameOver = true;
       world.add(WinningScreen());
+      backgroundAudioPlayer.stop();
+      await FlameAudio.loop("winning.mp3");
     }
-    return;
   }
 
   @override
@@ -51,7 +53,7 @@ class ColdAndHotGame extends LeapGame
   @override
   Future<void> onLoad() async {
     FlameAudio.bgm.initialize();
-    //FlameAudio.loop('background.mp3');
+    backgroundAudioPlayer = await FlameAudio.loop('background.mp3');
     tiledObjectHandlers = {
       'Hazard': HazardFactory(),
       'Door': DoorFactory(),
